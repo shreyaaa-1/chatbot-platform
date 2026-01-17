@@ -1,16 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../components/Layout";
-import { useEffect } from "react";
-import api from "../api/axios";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import Dashboard from "../pages/Dashboard";
+import ProjectDetail from "../pages/ProjectDetail";
 
 
-
-// Temporary placeholders (real pages come later)
-const ProjectDetail = () => <div>Project Detail</div>;
 
 export default function AppRouter() {
   return (
