@@ -1,14 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import api from "../api/axios";
 
-export default function Sidebar() {
-  const [projects, setProjects] = useState([]);
+export default function Sidebar({ projects }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    api.get("/projects").then((res) => setProjects(res.data));
-  }, []);
 
   return (
     <aside className="w-64 bg-[#171717] border-r border-gray-800 p-4 flex flex-col">

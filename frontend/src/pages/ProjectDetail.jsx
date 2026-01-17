@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
 
@@ -14,6 +14,9 @@ export default function ProjectDetail() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const bottomRef = useRef(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+
 
   // Load project + chat history
   useEffect(() => {
@@ -34,6 +37,10 @@ export default function ProjectDetail() {
 
     loadData();
   }, [id]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, sending]);
 
   const handleSavePrompt = async () => {
     setSaving(true);
@@ -91,86 +98,96 @@ export default function ProjectDetail() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">
-        {project.name}
-      </h2>
-
-      {error && (
-        <p className="text-red-500 text-sm mb-3">
-          {error}
-        </p>
-      )}
-
-      {/* System Prompt */}
-      <div className="bg-white p-4 rounded shadow mb-6">
-        <h3 className="font-medium mb-2">System Prompt</h3>
-
-        <textarea
-          className="w-full border p-2 min-h-[120px]"
-          value={systemPrompt}
-          onChange={(e) => setSystemPrompt(e.target.value)}
-        />
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold">
+          {project.name}
+        </h2>
 
         <button
-          onClick={handleSavePrompt}
-          disabled={saving}
-          className="mt-3 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+          onClick={() => setShowPrompt((prev) => !prev)}
+          className="text-sm text-gray-400 hover:text-white border border-gray-700 px-3 py-1 rounded"
         >
-          {saving ? "Saving..." : "Save Prompt"}
+          {showPrompt ? "Hide system prompt" : "Edit system prompt"}
         </button>
       </div>
 
-      {/* Chat */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
-  {messages.map((msg, i) => (
-    <div
-      key={i}
-      className={`max-w-3xl ${
-        msg.role === "user"
-          ? "ml-auto text-right"
-          : "mr-auto"
-      }`}
-    >
-      <div
-        className={`inline-block px-4 py-3 rounded-lg text-sm leading-relaxed ${
-          msg.role === "user"
-            ? "bg-[#2f2f2f]"
-            : "bg-[#1f1f1f]"
-        }`}
-      >
-        {msg.content}
+
+      {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
+      {/* System Prompt */}
+      {showPrompt && (
+        <div className="bg-[#111] border border-gray-800 p-4 rounded mb-6">
+          <h3 className="font-medium mb-2">
+            System Prompt
+          </h3>
+
+          <textarea
+            className="w-full bg-[#1e1e1e] border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 min-h-[120px]"
+            value={systemPrompt}
+            onChange={(e) => setSystemPrompt(e.target.value)}
+            placeholder="Define how the AI should behave..."
+          />
+
+          <button
+            onClick={handleSavePrompt}
+            disabled={saving}
+            className="mt-3 bg-white text-black px-4 py-2 rounded font-medium"
+          >
+            {saving ? "Saving..." : "Save Prompt"}
+          </button>
+        </div>
+      )}
+
+      {/* Chat Container */}
+      <div className="flex flex-col h-[calc(100vh-180px)]">
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`max-w-3xl ${
+                msg.role === "user" ? "ml-auto text-right" : "mr-auto"
+              }`}
+            >
+              <div
+                className={`inline-block px-4 py-3 rounded-lg text-sm leading-relaxed ${
+                  msg.role === "user" ? "bg-[#2f2f2f]" : "bg-[#1f1f1f]"
+                }`}
+              >
+                {msg.content}
+              </div>
+            </div>
+          ))}
+
+          {sending && (
+            <p className="text-gray-500 text-sm">Assistant is thinking…</p>
+          )}
+
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Fixed Input */}
+        <div className="border-t border-gray-800 p-4 bg-[#0f0f0f]">
+          <div className="max-w-3xl mx-auto flex gap-2">
+            <input
+              className="flex-1 bg-[#1e1e1e] border border-gray-700 rounded px-4 py-3 text-sm text-gray-200 focus:outline-none"
+              placeholder="Send a message…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              disabled={sending}
+            />
+
+            <button
+              onClick={handleSendMessage}
+              disabled={sending}
+              className="bg-white text-black px-4 py-3 rounded font-medium"
+            >
+              Send
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  ))}
-
-  {sending && (
-    <p className="text-gray-500 text-sm">
-      Assistant is thinking…
-    </p>
-  )}
-</div>
-      {/* Input */}
-      <div className="border-t border-gray-800 p-4">
-  <div className="max-w-3xl mx-auto flex gap-2">
-    <input
-      className="flex-1 bg-[#1e1e1e] border border-gray-700 rounded px-4 py-3"
-      placeholder="Send a message…"
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-      onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-      disabled={sending}
-    />
-
-    <button
-      onClick={handleSendMessage}
-      disabled={sending}
-      className="bg-white text-black px-4 py-3 rounded"
-    >
-      Send
-    </button>
-  </div>
-</div>
-
     </div>
   );
 }
