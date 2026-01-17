@@ -6,11 +6,20 @@ const protectedRoutes = require("./routes/protectedRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const cors = require("cors");
+
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 
 // Routes
 app.use("/auth", authRoutes);
