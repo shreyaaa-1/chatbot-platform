@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/auth", authRoutes);
 app.use("/protected", protectedRoutes);
 app.use("/projects", projectRoutes);
 app.use("/chat", chatRoutes);
+app.use("/ai", aiRoutes);
 
 // DB + Server start
 const PORT = process.env.PORT || 5000;
