@@ -5,19 +5,11 @@ import { useEffect } from "react";
 import api from "../api/axios";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
+import Dashboard from "../pages/Dashboard";
+
 
 
 // Temporary placeholders (real pages come later)
-const Dashboard = () => {
-  useEffect(() => {
-    api
-      .get("/projects")
-      .then((res) => console.log("Projects:", res.data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  return <div>Dashboard</div>;
-};
 const ProjectDetail = () => <div>Project Detail</div>;
 
 export default function AppRouter() {
