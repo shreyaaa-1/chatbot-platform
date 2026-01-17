@@ -48,66 +48,42 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Your Projects</h2>
+   <div className="flex-1 flex items-center justify-center">
+  <div className="text-center max-w-md">
+    <h2 className="text-2xl font-semibold mb-2">
+      Create a new AI agent
+    </h2>
+    <p className="text-gray-400 mb-6">
+      Give your agent a name and a system prompt to define its behavior.
+    </p>
 
-      {error && (
-        <p className="text-red-500 text-sm mb-3">{error}</p>
-      )}
+    <form
+      onSubmit={handleCreateProject}
+      className="space-y-3"
+    >
+      <input
+        className="w-full bg-[#1e1e1e] border border-gray-700 rounded px-3 py-2"
+        placeholder="Project name"
+        value={newName}
+        onChange={(e) => setNewName(e.target.value)}
+        required
+      />
 
-      {/* Create Project */}
-      <form
-        onSubmit={handleCreateProject}
-        className="bg-white p-4 rounded shadow mb-6"
+      <textarea
+        className="w-full bg-[#1e1e1e] border border-gray-700 rounded px-3 py-2"
+        placeholder="System prompt (optional)"
+        value={newPrompt}
+        onChange={(e) => setNewPrompt(e.target.value)}
+      />
+
+      <button
+        type="submit"
+        className="w-full bg-white text-black py-2 rounded font-medium"
       >
-        <h3 className="font-medium mb-2">Create New Project</h3>
-
-        <input
-          type="text"
-          placeholder="Project name"
-          className="w-full border p-2 mb-2"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          required
-        />
-
-        <textarea
-          placeholder="System prompt (optional)"
-          className="w-full border p-2 mb-3"
-          value={newPrompt}
-          onChange={(e) => setNewPrompt(e.target.value)}
-        />
-
-        <button
-          type="submit"
-          disabled={creating}
-          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          {creating ? "Creating..." : "Create Project"}
-        </button>
-      </form>
-
-      {/* Project List */}
-      {projects.length === 0 ? (
-        <p>No projects yet.</p>
-      ) : (
-        <ul className="space-y-2">
-          {projects.map((project) => (
-            <li
-              key={project._id}
-              onClick={() => navigate(`/projects/${project._id}`)}
-              className="bg-white p-3 rounded shadow cursor-pointer hover:bg-gray-50"
-            >
-              <p className="font-medium">{project.name}</p>
-              {project.systemPrompt && (
-                <p className="text-sm text-gray-600 truncate">
-                  {project.systemPrompt}
-                </p>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+        Create
+      </button>
+    </form>
+  </div>
+</div>
   );
 }

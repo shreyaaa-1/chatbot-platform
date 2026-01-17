@@ -121,55 +121,56 @@ export default function ProjectDetail() {
       </div>
 
       {/* Chat */}
-      <div className="bg-white p-4 rounded shadow">
-        <h3 className="font-medium mb-3">Chat</h3>
-
-        <div className="border p-3 mb-3 h-64 overflow-y-auto space-y-2">
-          {messages.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              No messages yet.
-            </p>
-          ) : (
-            messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`p-2 rounded text-sm ${
-                  msg.role === "user"
-                    ? "bg-blue-100 text-right"
-                    : "bg-gray-100 text-left"
-                }`}
-              >
-                {msg.content}
-              </div>
-            ))
-          )}
-
-          {sending && (
-            <p className="text-sm text-gray-400 italic">
-              AI is thinking…
-            </p>
-          )}
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 border p-2"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message…"
-            disabled={sending}
-          />
-
-          <button
-            onClick={handleSendMessage}
-            disabled={sending}
-            className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-          >
-            Send
-          </button>
-        </div>
+      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+  {messages.map((msg, i) => (
+    <div
+      key={i}
+      className={`max-w-3xl ${
+        msg.role === "user"
+          ? "ml-auto text-right"
+          : "mr-auto"
+      }`}
+    >
+      <div
+        className={`inline-block px-4 py-3 rounded-lg text-sm leading-relaxed ${
+          msg.role === "user"
+            ? "bg-[#2f2f2f]"
+            : "bg-[#1f1f1f]"
+        }`}
+      >
+        {msg.content}
       </div>
+    </div>
+  ))}
+
+  {sending && (
+    <p className="text-gray-500 text-sm">
+      Assistant is thinking…
+    </p>
+  )}
+</div>
+      {/* Input */}
+      <div className="border-t border-gray-800 p-4">
+  <div className="max-w-3xl mx-auto flex gap-2">
+    <input
+      className="flex-1 bg-[#1e1e1e] border border-gray-700 rounded px-4 py-3"
+      placeholder="Send a message…"
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+      disabled={sending}
+    />
+
+    <button
+      onClick={handleSendMessage}
+      disabled={sending}
+      className="bg-white text-black px-4 py-3 rounded"
+    >
+      Send
+    </button>
+  </div>
+</div>
+
     </div>
   );
 }

@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../components/Layout";
+
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import Dashboard from "../pages/Dashboard";
 import ProjectDetail from "../pages/ProjectDetail";
-
-
 
 export default function AppRouter() {
   return (
@@ -14,9 +13,11 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
 
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Protected routes WITH layout */}
         <Route
           path="/dashboard"
           element={
