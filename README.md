@@ -161,3 +161,32 @@ Frontend runs on:
     MongoDB
             ↓
     OpenRouter (Free LLM)
+
+---
+
+## 🌍 Deployment (Completely Free)
+
+### Frontend
+- Platform: Vercel (Free)
+
+### Backend
+- Platform: Render (Free)
+
+### Database
+- MongoDB Atlas (Free Tier)
+
+---
+
+## 🔐 Environment Variables
+
+### Backend (Render)
+
+    MONGO_URI=your_mongodb_connection_string
+    JWT_SECRET=your_jwt_secret
+    OPENROUTER_API_KEY=your_openrouter_api_key
+
+### Frontend (Vercel)
+
+    VITE_API_URL=https://your-backend-name.onrender.com
+
+---
