@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import Layout from "../components/Layout";
 
 // Temporary placeholders (real pages come later)
 const Login = () => <div>Login</div>;
@@ -20,7 +21,9 @@ export default function AppRouter() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Layout>
+                <Dashboard />
+              </Layout>
             </ProtectedRoute>
           }
         />
@@ -29,7 +32,9 @@ export default function AppRouter() {
           path="/projects/:id"
           element={
             <ProtectedRoute>
-              <ProjectDetail />
+              <Layout>
+                <ProjectDetail />
+              </Layout>
             </ProtectedRoute>
           }
         />
